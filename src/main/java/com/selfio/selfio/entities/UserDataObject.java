@@ -2,6 +2,7 @@ package com.selfio.selfio.entities;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -62,5 +63,18 @@ public class UserDataObject {
 
     public void setVerified(Boolean verified) {
         this.verified = verified;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDataObject that = (UserDataObject) o;
+        return id.equals(that.id) && email.equals(that.email) && password.equals(that.password) && verified.equals(that.verified);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, verified);
     }
 }
