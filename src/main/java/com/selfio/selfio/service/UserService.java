@@ -17,21 +17,13 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-    public UserDataObject save(UserRegistrationDto userRegistrationDto) {
-        UserDataObject userDataObject = new UserDataObject(
-                userRegistrationDto.getEmail(),
-                userRegistrationDto.getPassword(),
-                true
-        );
-        return userRepository.save(userDataObject);
-    }
 
     @Override
     public UserDataObject registerNewUserAccount(UserRegistrationDto userRegistrationDto) {
         UserDataObject userDataObject = new UserDataObject();
         userDataObject.setEmail(userRegistrationDto.getEmail());
         userDataObject.setPassword(userRegistrationDto.getPassword());
-
+        userDataObject.setVerified(true);
         return userRepository.save(userDataObject);
     }
 
