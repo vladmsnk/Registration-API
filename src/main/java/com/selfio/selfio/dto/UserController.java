@@ -1,5 +1,6 @@
-package com.selfio.selfio.user;
+package com.selfio.selfio.dto;
 
+import com.selfio.selfio.entities.UserDataObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

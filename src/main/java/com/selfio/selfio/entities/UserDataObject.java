@@ -1,4 +1,4 @@
-package com.selfio.selfio.user;
+package com.selfio.selfio.entities;
 
 
 import javax.persistence.*;
