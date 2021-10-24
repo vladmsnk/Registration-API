@@ -1,6 +1,9 @@
 package com.selfio.selfio.entities;
 
 
+import com.selfio.selfio.validators.ValidEmail;
+import com.selfio.selfio.validators.ValidPassword;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -18,10 +21,15 @@ public class UserDataObject {
             generator = "user_sequence"
     )
     private Integer id;
+
+    @ValidEmail
     @Column(nullable = false)
     private String email;
+
+    @ValidPassword
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private Boolean verified;
 
