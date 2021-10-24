@@ -1,12 +1,11 @@
 package com.selfio.selfio;
 
-import com.selfio.selfio.dto.UserRepository;
+import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.entities.UserDataObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
@@ -28,8 +27,8 @@ public class UserRepositoryTests {
     @Test
     public void testCreateUser() {
         UserDataObject userDataObject = new UserDataObject();
-        userDataObject.setEmail("vyumoiseenkov@edu.hse.ru");
-        userDataObject.setPassword("qwerty");
+        userDataObject.setEmail("georgiy@edu.hse.ru");
+        userDataObject.setPassword("qwerty123");
         userDataObject.setVerified(true);
         UserDataObject savedUser =  userRepository.save(userDataObject);
         UserDataObject existingUser = testEntityManager.find(UserDataObject.class, savedUser.getId());

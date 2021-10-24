@@ -18,12 +18,21 @@ public class UserDataObject {
             generator = "user_sequence"
     )
     private Integer id;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private Boolean verified;
 
     public UserDataObject() {
 
+    }
+
+    public UserDataObject(String email, String password, Boolean verified) {
+        this.email = email;
+        this.password = password;
+        this.verified = verified;
     }
 
     public UserDataObject(Integer id, String email, String password, Boolean verified) {
