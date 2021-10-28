@@ -1,7 +1,7 @@
 package com.selfio.selfio;
 
 import com.selfio.selfio.repository.UserRepository;
-import com.selfio.selfio.entities.UserDataObject;
+import com.selfio.selfio.entities.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,12 +26,12 @@ public class UserRepositoryTests {
 
     @Test
     public void testCreateUser() {
-        UserDataObject userDataObject = new UserDataObject();
+        User userDataObject = new User();
         userDataObject.setEmail("georgiy@edu.hse.ru");
         userDataObject.setPassword("qwerty123");
         userDataObject.setVerified(true);
-        UserDataObject savedUser =  userRepository.save(userDataObject);
-        UserDataObject existingUser = testEntityManager.find(UserDataObject.class, savedUser.getId());
+        User savedUser =  userRepository.save(userDataObject);
+        User existingUser = testEntityManager.find(User.class, savedUser.getId());
         assertEquals(savedUser, existingUser);
     }
 }

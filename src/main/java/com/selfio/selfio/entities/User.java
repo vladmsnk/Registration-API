@@ -2,48 +2,38 @@ package com.selfio.selfio.entities;
 
 
 import com.selfio.selfio.validators.ValidEmail;
-import com.selfio.selfio.validators.ValidPassword;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table
-public class UserDataObject {
+@Table(name = "users")
+public class User {
     @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ValidEmail
     @Column(nullable = false)
     private String email;
 
-    @ValidPassword
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private Boolean verified;
 
-    public UserDataObject() {
+    public User() {
 
     }
 
-    public UserDataObject(String email, String password, Boolean verified) {
+    public User(String email, String password, Boolean verified) {
         this.email = email;
         this.password = password;
         this.verified = verified;
     }
 
-    public UserDataObject(Integer id, String email, String password, Boolean verified) {
+    public User(Integer id, String email, String password, Boolean verified) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -86,7 +76,7 @@ public class UserDataObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDataObject that = (UserDataObject) o;
+        User that = (User) o;
         return id.equals(that.id) && email.equals(that.email) && password.equals(that.password) && verified.equals(that.verified);
     }
 
