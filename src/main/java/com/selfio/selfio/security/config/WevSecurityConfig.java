@@ -20,8 +20,10 @@ public class WevSecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/registration/**")
+                .antMatchers("/registration")
                 .permitAll()
+                .antMatchers("/registration/**")
+                .hasRole("USER")
                 .and()
                 .formLogin();
     }
