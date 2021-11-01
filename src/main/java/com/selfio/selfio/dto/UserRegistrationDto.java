@@ -11,6 +11,7 @@ public class UserRegistrationDto {
     @ValidEmail
     private String email;
     private String password;
+
     public UserRegistrationDto() {
     }
 

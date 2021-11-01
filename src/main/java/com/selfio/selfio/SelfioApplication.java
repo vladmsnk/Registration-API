@@ -12,4 +12,5 @@ public class SelfioApplication {
     public static void main(String[] args) {
         SpringApplication.run(SelfioApplication.class, args);
     }
+
 }

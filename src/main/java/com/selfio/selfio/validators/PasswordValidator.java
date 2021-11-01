@@ -9,6 +9,7 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
 
     private Pattern pattern;
     private Matcher matcher;
+
     private static final String PASSWORD_PATTERN =
             "^[A-Za-z0-9.?!@#$%]+$";
     @Override

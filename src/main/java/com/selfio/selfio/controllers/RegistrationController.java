@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "registration")
 public class RegistrationController {
-
 
     private final RegistrationService registrationService;
 
@@ -17,7 +15,8 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping
+
+    @PostMapping("registration")
     public String register(@RequestBody UserRegistrationDto userRegistrationDto) {
         return registrationService.register(userRegistrationDto);
     }

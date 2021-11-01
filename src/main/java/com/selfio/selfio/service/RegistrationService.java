@@ -16,9 +16,8 @@ public class RegistrationService {
         this.userService = userService;
     }
 
-
     public String register(UserRegistrationDto userRegistrationDto) {
-         return userService.singUpUser(
+         return userService.signUpUser(
                  new User(
                          userRegistrationDto.getLogin(),
                          userRegistrationDto.getEmail(),

@@ -10,12 +10,17 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "login"),
+                @UniqueConstraint(columnNames = "email"),
+        })
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String login;
     @Column(nullable = false)
     private String email;
@@ -37,12 +42,12 @@ public class User implements UserDetails {
         this.verified = verified;
     }
 
-    public User(Integer id, String login, String email, String password, Boolean verified) {
+    public User(Integer id, String login, String email, String password) {
         this.id = id;
         this.login = login;
         this.email = email;
         this.password = password;
-        this.verified = verified;
+        this.verified = false;
     }
 
     public Integer getId() {
@@ -111,7 +116,7 @@ public class User implements UserDetails {
         this.login = login;
     }
 
-    public void setVerified(Boolean verified) {
+    public void setVerified(Boolean verified)  {
         this.verified = verified;
     }
 
@@ -128,128 +133,16 @@ public class User implements UserDetails {
         return Objects.hash(id, login, email, password, verified);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", verified=" + verified +
+                '}';
+    }
 }
 
-//@Entity
-//@Table
-//public class User implements UserDetails {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Integer id;
-//
-////    @Column(nullable = false)
-////    private String login;
-//
-//    @ValidEmail
-//    @Column(nullable = false)
-//    private String email;
-//
-//    @Column(nullable = false)
-//    private String password;
-//
-//    @Column(nullable = false)
-//    private Boolean verified;
-//
-//    public User(String login, String email, String password, Boolean verified) {
-////        this.login = login;
-//        this.email = email;
-//        this.password = password;
-//        this.verified = verified;
-//    }
-//
-//    public User() {
-//    }
-//
-//    public User(Integer id, String login, String email, String password, Boolean verified) {
-//        this.id = id;
-////        this.login = login;
-//        this.email = email;
-//        this.password = password;
-//        this.verified = verified;
-//    }
-//
-//
-//    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
-//
-////    public String getLogin() {
-////        return login;
-////    }
-////
-////    public void setLogin(String login) {
-////        this.login = login;
-////    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public Boolean getVerified() {
-//        return verified;
-//    }
-//
-//    public void setVerified(Boolean verified) {
-//        this.verified = verified;
-//    }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        User user = (User) o;
-//        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(verified, user.verified);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, login, email, password, verified);
-//    }
 
