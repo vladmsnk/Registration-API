@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 
 @Service
 public class RegistrationService {
@@ -29,7 +31,7 @@ public class RegistrationService {
                          userRegistrationDto.getLogin(),
                          userRegistrationDto.getEmail(),
                          userRegistrationDto.getPassword(),
-                         true
+                         false
                  )
          );
 

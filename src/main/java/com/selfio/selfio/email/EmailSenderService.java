@@ -41,5 +41,4 @@ public class EmailSenderService {
             throw new IllegalStateException("failed!");
         }
     }
-
 }

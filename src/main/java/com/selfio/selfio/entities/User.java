@@ -32,7 +32,6 @@ public class User implements UserDetails {
     private Boolean verified;
 
     public User() {
-
     }
 
     public User(String login, String email, String password, Boolean verified) {

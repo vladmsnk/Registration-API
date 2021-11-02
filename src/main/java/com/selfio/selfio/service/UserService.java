@@ -33,10 +33,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
-    public void sendRegistrationConfirmationEmail(User user) {
-
-    }
-
     public String signUpUser(User user) {
         boolean userExists = userRepository.findByEmail(user.getEmail())
                 .isPresent();
