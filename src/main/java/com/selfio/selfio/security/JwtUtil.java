@@ -42,13 +42,9 @@ public class JwtUtil {
                 .getBody();
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpirationTime(token).before(new Date());
     }
 
-    private boolean isCorrectToken(String token, User user) {
-        final String extractLogin = extractLogin(token);
-        return extractLogin.equals(user.getLogin()) &&
-                !isTokenExpired(token);
-    }
+
 }

@@ -1,10 +1,12 @@
 package com.selfio.selfio.service;
 
 
+import com.selfio.selfio.email.EmailSenderService;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +19,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
-
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtUtil jwtUtil) {
@@ -48,4 +49,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return jwtToken;
     }
+
+    public User findUserByLogin(String login) {
+        return  userRepository.findByLogin(login);
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+
 }

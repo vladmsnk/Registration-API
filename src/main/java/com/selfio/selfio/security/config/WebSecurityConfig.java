@@ -30,6 +30,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/static/**")
+                .permitAll()
+                .antMatchers("/registration/confirmation")
+                .permitAll()
                 .antMatchers("/registration")
                 .permitAll()
                 .anyRequest()
@@ -44,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("vlad")
                 .password("1234")
                 .roles("USER");
+
     }
 
     @Bean
