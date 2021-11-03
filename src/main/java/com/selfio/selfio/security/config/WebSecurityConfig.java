@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-//
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,25 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration/confirmation")
-                .permitAll()
                 .antMatchers("/registration")
+                .permitAll()
+                .antMatchers("/confirmation")
                 .permitAll()
                 .antMatchers("/", "/resources/**").permitAll()
                 .anyRequest()
                 .permitAll()
-//                .authenticated()
                 .and()
                 .formLogin();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("vlad")
-                .password("1234")
-                .roles("USER");
-
+        auth.userDetailsService(userService);
     }
 
     @Bean

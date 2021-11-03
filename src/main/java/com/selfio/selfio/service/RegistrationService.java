@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
-
 @Service
 public class RegistrationService {
 
@@ -34,9 +31,8 @@ public class RegistrationService {
                          false
                  )
          );
-
-         String emailLink = "<h1> <a href='http://localhost:8080/registration/confirmation?token=" + token  + "'>Confirm Account</a> </h1>";
-//         emailSenderService.sendEmail(userRegistrationDto.getEmail(), emailLink);
+         String emailLink = "<h1> <a href='http://localhost:8081/confirmation?token=" + token  + "'>Confirm Account</a> </h1>";
+         emailSenderService.sendEmail(userRegistrationDto.getEmail(), emailLink);
          return emailLink;
     }
 

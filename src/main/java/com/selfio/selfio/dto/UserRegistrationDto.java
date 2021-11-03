@@ -2,20 +2,31 @@ package com.selfio.selfio.dto;
 
 import com.selfio.selfio.validators.ValidEmail;
 import com.selfio.selfio.validators.ValidPassword;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
-public class UserRegistrationDto  implements UserDetails {
+
+public class UserRegistrationDto {
+
+    @NotEmpty
+    @NonNull
     private String login;
+
+    @NotEmpty
+    @NonNull
     @ValidEmail
     private String email;
+
+    @NotEmpty
+    @NonNull
+    @ValidPassword
     private String password;
 
-    public UserRegistrationDto() {
-    }
+    private boolean enabled;
 
     public UserRegistrationDto(String email, String password, String login) {
         this.email = email;
@@ -23,6 +34,9 @@ public class UserRegistrationDto  implements UserDetails {
         this.login = login;
     }
 
+    public UserRegistrationDto() {
+
+    }
     public String getEmail() {
         return email;
     }
@@ -31,46 +45,16 @@ public class UserRegistrationDto  implements UserDetails {
         return login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 
     public void setPassword(String password) {

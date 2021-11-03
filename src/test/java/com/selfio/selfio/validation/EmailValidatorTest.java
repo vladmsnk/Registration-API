@@ -31,7 +31,7 @@ public class EmailValidatorTest {
         String wrongE3 = "@mail.com";
         String wrongE4 = "ann@            fd12";
         String wrongE5 = "vyumoiseenkov@edu";
-        String wrongE6 = "12345@com.re";
+        String wrongE6 = "12345@com";
         String wrongE7 = "@";
         assertFalse(emailValidator.isValid(wrongE1, null) ||
                 emailValidator.isValid(wrongE2, null) ||
