@@ -16,13 +16,11 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -32,25 +30,11 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public String signUpUser(User user) {
-        boolean userExists = userRepository.findByEmail(user.getEmail())
-                .isPresent();
-        if (userExists) {
-            throw new IllegalStateException("User already exists");
-        }
+    public void saveUserWithEncodedPassword(User user) {
         String encoded = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encoded);
-        String jwtToken = jwtUtil.generateToken(user);
-        userRepository.save(user);
-        return jwtToken;
-    }
-
-    public User findUserByLogin(String login) {
-        return  userRepository.findByLogin(login);
-    }
-
-    public void saveUser(User user) {
         userRepository.save(user);
     }
+
 
 }

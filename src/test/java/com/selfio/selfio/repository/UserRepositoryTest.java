@@ -1,13 +1,14 @@
 package com.selfio.selfio.repository;
 
 import com.selfio.selfio.entities.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -15,9 +16,14 @@ class UserRepositoryTest {
     @Autowired
     public UserRepository userRepository;
 
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
 
     @Test
-    void findByEmail() {
+    void shouldFindByEmail() {
         String email = "vlad@mail.ru";
         User expectedUser = createUser("vlad", email, "12345", true);
 
@@ -29,7 +35,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByLogin() {
+    void shouldFindByLogin() {
         String login = "vladmsnk";
         User expectedUser = createUser(login, "vladmsnk@mail.ru", "hello", false);
 
@@ -38,6 +44,18 @@ class UserRepositoryTest {
         User givenUser = userRepository.findByLogin(login);
 
         assertThat(expectedUser).isEqualTo(givenUser);
+    }
+
+    @Test
+    void shouldCheckIfExistsByEmail() {
+        String login = "vladmsnk";
+
+        User expectedUser = createUser(login, "vladmsnk@mail.ru", "12343", true);
+
+        userRepository.save(expectedUser);
+
+        boolean exists = userRepository.existsByEmail("vladmsnk@mail.ru");
+        assertThat(exists).isEqualTo(true);
 
     }
 

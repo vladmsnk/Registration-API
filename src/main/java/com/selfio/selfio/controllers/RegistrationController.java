@@ -28,7 +28,7 @@ public class RegistrationController {
         try {
             registrationService.confirmToken(token);
         } catch (IllegalStateException | UsernameNotFoundException ignored) {
-
+            model.addAttribute("error");
         }
         return "successRegistration";
     }
@@ -40,7 +40,7 @@ public class RegistrationController {
     }
 
     @PostMapping(path = "/registration")
-    public String register(@RequestBody @Valid UserRegistrationDto userRegistrationDto, BindingResult bindingResult,
+    public String register(@ModelAttribute("user") @Valid UserRegistrationDto userRegistrationDto, BindingResult bindingResult,
                            Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error");
