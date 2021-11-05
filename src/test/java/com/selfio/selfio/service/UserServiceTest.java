@@ -1,10 +1,10 @@
 package com.selfio.selfio.service;
 
+import com.selfio.selfio.dto.UserRegistrationDto;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -21,28 +21,35 @@ class UserServiceTest {
     private UserRepository userRepository;
 
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     private UserService userService;
-
-
 
     @BeforeEach
     void setUserService() {
-        userService = new UserService(userRepository, new BCryptPasswordEncoder());
+        userService = new UserService(userRepository, bCryptPasswordEncoder);
     }
 
 
     @Test
     public void shouldSaveUserWithEncodedPassword() {
 
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        User user = new User("walenok651", "walenok@mail.ru", bCryptPasswordEncoder.encode("12walenok24"), true);
-
+        String pass = "12walenok24";
+        User user = new User("walenok651", "walenok@mail.ru",pass, true);
         userService.saveUserWithEncodedPassword(user);
+        verify(bCryptPasswordEncoder, times(1)).encode(pass);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+
         verify(userRepository).save(userArgumentCaptor.capture());
+    }
 
-        User expected = userArgumentCaptor.getValue();
-
-        assertThat(expected).isEqualTo(user);
+    @Test
+    void shouldCreateUserByUserDto() {
+        UserRegistrationDto userRegistrationDto = new UserRegistrationDto("vlad", "vlad@mail.ru", "12234");
+        User created = userService.createUserByUseDTO(userRegistrationDto);
+        User expected = new User("vlad", "vlad@mail.ru", "12234", false);
+        assertThat(expected).isEqualTo(created);
     }
 }

@@ -1,5 +1,6 @@
 package com.selfio.selfio.service;
 
+import com.selfio.selfio.dto.UserRegistrationDto;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.security.JwtUtil;
@@ -14,9 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private  UserRepository userRepository;
+    private  BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    public UserService() {
+
+    }
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
@@ -34,6 +39,10 @@ public class UserService implements UserDetailsService {
         String encoded = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encoded);
         userRepository.save(user);
+    }
+
+    public User createUserByUseDTO(UserRegistrationDto userRegistrationDto) {
+        return new User(userRegistrationDto.getLogin(), userRegistrationDto.getEmail(), userRegistrationDto.getPassword(), false);
     }
 
 

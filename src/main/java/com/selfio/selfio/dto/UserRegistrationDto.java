@@ -28,10 +28,10 @@ public class UserRegistrationDto {
 
     private boolean enabled;
 
-    public UserRegistrationDto(String email, String password, String login) {
+    public UserRegistrationDto(String login, String email, String password) {
+        this.login = login;
         this.email = email;
         this.password = password;
-        this.login = login;
     }
 
     public UserRegistrationDto() {

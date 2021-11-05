@@ -30,23 +30,26 @@ public class RegistrationService {
         if (userRepository.existsByEmail(userRegistrationDto.getEmail())) {
             throw new IllegalArgumentException("User with " + userRegistrationDto.getEmail() + "exits!");
         }
-        User user = new User(userRegistrationDto.getLogin(),userRegistrationDto.getEmail(),userRegistrationDto.getPassword(), false);
+        User user = userService.createUserByUseDTO(userRegistrationDto);
         userService.saveUserWithEncodedPassword(user);
         String token = jwtUtil.generateToken(user);
         String emailLink = "<h1> <a href='http://localhost:8081/confirmation?token=" + token  + "'>Confirm Account</a> </h1>";
         emailSenderService.sendEmail(userRegistrationDto.getEmail(), emailLink);
     }
 
-    public void confirmToken(String token) {
-        User user = userRepository.findByLogin(jwtUtil.extractLogin(token));
-        if (user == null) {
+    public boolean confirmToken(String token) {
+        String login = jwtUtil.extractLogin(token);
+        if (!userRepository.existsByLogin(login))  {
             throw new UsernameNotFoundException("Invalid token!");
         }
         if (jwtUtil.isTokenExpired(token)) {
             throw new IllegalStateException("Token is expired!");
         }
+        User user = userRepository.findByLogin(login);
         user.setVerified(true);
         userService.saveUserWithEncodedPassword(user);
+        return true;
     }
-
 }
+
+
