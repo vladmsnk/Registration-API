@@ -3,7 +3,6 @@ package com.selfio.selfio.service;
 import com.selfio.selfio.dto.UserRegistrationDto;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
-import com.selfio.selfio.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

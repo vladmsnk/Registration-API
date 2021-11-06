@@ -25,19 +25,20 @@ public class RegistrationService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void register(UserRegistrationDto userRegistrationDto) {
+    public String register(UserRegistrationDto userRegistrationDto) {
 
         if (userRepository.existsByEmail(userRegistrationDto.getEmail())) {
-            throw new IllegalArgumentException("User with " + userRegistrationDto.getEmail() + "exits!");
+            throw new RuntimeException("User with " + userRegistrationDto.getEmail() + "exits!");
         }
         User user = userService.createUserByUseDTO(userRegistrationDto);
         userService.saveUserWithEncodedPassword(user);
         String token = jwtUtil.generateToken(user);
         String emailLink = "<h1> <a href='http://localhost:8081/confirmation?token=" + token  + "'>Confirm Account</a> </h1>";
         emailSenderService.sendEmail(userRegistrationDto.getEmail(), emailLink);
+        return token;
     }
 
-    public boolean confirmToken(String token) {
+    public String confirmToken(String token) {
         String login = jwtUtil.extractLogin(token);
         if (!userRepository.existsByLogin(login))  {
             throw new UsernameNotFoundException("Invalid token!");
@@ -48,7 +49,7 @@ public class RegistrationService {
         User user = userRepository.findByLogin(login);
         user.setVerified(true);
         userService.saveUserWithEncodedPassword(user);
-        return true;
+        return "confirmed";
     }
 }
 

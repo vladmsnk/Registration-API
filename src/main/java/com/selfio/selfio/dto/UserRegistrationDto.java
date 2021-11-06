@@ -1,32 +1,25 @@
 package com.selfio.selfio.dto;
 
-import com.selfio.selfio.validators.ValidEmail;
-import com.selfio.selfio.validators.ValidPassword;
-import org.springframework.lang.NonNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 
 public class UserRegistrationDto {
 
-    @NotEmpty
-    @NonNull
+    @NotNull(message = "Login can not be null")
+    @Size(min = 2, message = "Login must be at least two characters")
     private String login;
 
-    @NotEmpty
-    @NonNull
-    @ValidEmail
+    @Email
     private String email;
 
-    @NotEmpty
-    @NonNull
-    @ValidPassword
+    @NotNull(message = "password is required")
+    @Size(min = 6, max = 16, message = "Password must be equal to or greater than 6 characters and less than 16 characters")
     private String password;
 
-    private boolean enabled;
 
     public UserRegistrationDto(String login, String email, String password) {
         this.login = login;
@@ -34,9 +27,6 @@ public class UserRegistrationDto {
         this.password = password;
     }
 
-    public UserRegistrationDto() {
-
-    }
     public String getEmail() {
         return email;
     }
@@ -61,14 +51,10 @@ public class UserRegistrationDto {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "UserRegistrationDto{" +
-                "login='" + login + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return
+//    }
 
     @Override
     public boolean equals(Object o) {
