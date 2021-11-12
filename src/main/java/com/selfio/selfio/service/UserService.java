@@ -1,22 +1,18 @@
 package com.selfio.selfio.service;
 
-import com.selfio.selfio.dto.UserRegistrationDto;
+import com.selfio.selfio.requests.UserRequest;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private  UserRepository userRepository;
     private  BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     public UserService() {
 
@@ -27,22 +23,14 @@ public class UserService implements UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-
-    }
-
-    public void saveUserWithEncodedPassword(User user) {
+    public void saveUser(User user) {
         String encoded = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encoded);
         userRepository.save(user);
     }
 
-    public User createUserByUseDTO(UserRegistrationDto userRegistrationDto) {
-        return new User(userRegistrationDto.getLogin(), userRegistrationDto.getEmail(), userRegistrationDto.getPassword(), false);
+    public User createUserByRequest(UserRequest userRequest) {
+        return new User(userRequest.getEmail(), userRequest.getPassword(), false);
     }
-
 
 }

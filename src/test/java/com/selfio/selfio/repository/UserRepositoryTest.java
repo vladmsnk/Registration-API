@@ -25,46 +25,21 @@ class UserRepositoryTest {
     @Test
     void shouldFindByEmail() {
         String email = "vlad@mail.ru";
-        User expectedUser = createUser("vlad", email, "12345", true);
-
+        User expectedUser = new User(email, "12345", false);
         userRepository.save(expectedUser);
-
         User givenUser = userRepository.findByEmail(email).get();
-
-        assertThat(expectedUser).isEqualTo(givenUser);
-    }
-
-    @Test
-    void shouldFindByLogin() {
-        String login = "vladmsnk";
-        User expectedUser = createUser(login, "vladmsnk@mail.ru", "hello", false);
-
-        userRepository.save(expectedUser);
-
-        User givenUser = userRepository.findByLogin(login);
-
         assertThat(expectedUser).isEqualTo(givenUser);
     }
 
     @Test
     void shouldCheckIfExistsByEmail() {
-        String login = "vladmsnk";
-
-        User expectedUser = createUser(login, "vladmsnk@mail.ru", "12343", true);
+        String email = "andrey@mail.ru";
+        User expectedUser = new User(email, "test", true);
 
         userRepository.save(expectedUser);
 
-        boolean exists = userRepository.existsByEmail("vladmsnk@mail.ru");
+        boolean exists = userRepository.existsByEmail(email);
         assertThat(exists).isEqualTo(true);
 
-    }
-
-    private User createUser(String login, String email, String password, boolean isVerified) {
-        return new User(
-                login,
-                email,
-                password,
-                isVerified
-        );
     }
 }

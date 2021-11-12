@@ -1,4 +1,4 @@
-package com.selfio.selfio.security;
+package com.selfio.selfio.service;
 
 import com.selfio.selfio.entities.User;
 import io.jsonwebtoken.Claims;
@@ -10,23 +10,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JwtUtil {
+public class JwtService {
     private final String secretKey = "secret";
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getLogin())
+                .setId(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-    public String extractLogin(String token) {
+    public Integer extractId(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.getSubject();
+        return Integer.parseInt(claims.getId());
     }
 
     public Date extractExpirationTime(String token) {

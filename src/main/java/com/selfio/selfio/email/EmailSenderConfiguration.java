@@ -9,21 +9,21 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class EmailSender {
-    private final EmailConfig emailConfig;
+public class EmailSenderConfiguration {
+    private final EmailProperties emailProperties;
 
     @Autowired
-    public EmailSender(EmailConfig emailConfig) {
-        this.emailConfig = emailConfig;
+    public EmailSenderConfiguration(EmailProperties emailProperties) {
+        this.emailProperties = emailProperties;
     }
 
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(this.emailConfig.getHost());
-        mailSender.setPort(this.emailConfig.getPort());
-        mailSender.setUsername(this.emailConfig.getUserName());
-        mailSender.setPassword(this.emailConfig.getPassword());
+        mailSender.setHost(this.emailProperties.getHost());
+        mailSender.setPort(this.emailProperties.getPort());
+        mailSender.setUsername(this.emailProperties.getUserName());
+        mailSender.setPassword(this.emailProperties.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
