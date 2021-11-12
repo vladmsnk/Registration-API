@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,24 +37,18 @@ public class AuthenticationController {
     public ResponseEntity login(@RequestBody AuthenticationDto request){
         try {
             String email = request.getEmail();
-            System.out.println(email);
-            //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
             User user = userService.findByEmail(email);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
-            } else if (!user.getPassword().equals(request.getPassword())) {
-                throw new IllegalArgumentException("Wrong password");
             }
-            String token = jwtTokenProvider.createToken(email, TempRoles.getRoles());
+            String token = jwtTokenProvider.createToken(user.getId(), TempRoles.getRoles());
             Map<Object, Object> response = new HashMap<>();
             response.put("email", email);
             response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email or password");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid password");
-            throw new BadCredentialsException("Invalid password");
         }
     }
 
