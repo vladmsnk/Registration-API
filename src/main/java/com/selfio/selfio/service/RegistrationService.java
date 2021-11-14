@@ -46,7 +46,7 @@ public class RegistrationService {
     public User confirmToken(String token) {
         Integer id   = jwtService.extractId(token);
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("User with id = " + id + "was not found!");
+            throw new UserNotFoundException("User with id = " + id + " was not found!");
         }
         if (jwtService.isTokenExpired(token)) {
             throw new ExpiredTokenException("Token is expired!");

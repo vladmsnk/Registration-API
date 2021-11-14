@@ -136,7 +136,7 @@ class RegistrationRegisterTest {
         given(userRepository.existsById(anyInt())).willReturn(false);
         this.mockMvc.perform(get("/confirmation?token=" + token)).andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
-                .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with id = " + user.getId() + "was not found!"));
+                .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with id = " + user.getId() + " was not found!"));
 
     }
     @Test

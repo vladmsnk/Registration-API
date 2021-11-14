@@ -1,5 +1,8 @@
 package com.selfio.selfio.controllers;
 
+import com.selfio.selfio.errors.AlreadyExistsException;
+import com.selfio.selfio.errors.ExpiredTokenException;
+import com.selfio.selfio.errors.UserNotFoundException;
 import com.selfio.selfio.requests.UserRequest;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.service.RegistrationService;
@@ -27,16 +30,9 @@ public class RegistrationController {
 
     @GetMapping(path = "/confirmation")
     public ResponseEntity<Object> confirm(@RequestParam("token")  String token) {
-
-        try {
             User confirmed = registrationService.confirmToken(token);
             LOGGER.debug("Confirmation of the token: {}", token);
             return new ResponseEntity<>(confirmed, HttpStatus.OK);
-        } catch (UsernameNotFoundException e) {
-            return new ResponseEntity<> (new UsernameNotFoundException("not found!"), HttpStatus.CONFLICT);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<> (new IllegalStateException("token is expired!"), HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PostMapping(path = "/registration")
