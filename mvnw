@@ -58,7 +58,7 @@ case "`uname`" in
     # See https://developer.apple.com/library/mac/qa/qa1170/_index.html
     if [ -z "$JAVA_HOME" ]; then
       if [ -x "/usr/libexec/java_home" ]; then
-        export JAVA_HOME="`/usr/libexec/java_home`"
+        export JAVA_HOME="`/usr/libexec/java_home -v1.8.0`"
       else
         export JAVA_HOME="/Library/Java/Home"
       fi
