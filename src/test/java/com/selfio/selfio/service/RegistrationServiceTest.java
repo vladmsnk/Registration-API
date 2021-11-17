@@ -2,7 +2,7 @@ package com.selfio.selfio.service;
 
 import com.selfio.selfio.email.EmailSenderService;
 import com.selfio.selfio.entities.User;
-import com.selfio.selfio.errors.AlreadyExistsException;
+import com.selfio.selfio.exceptions.AlreadyExistsException;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.requests.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,9 +54,7 @@ class RegistrationServiceTest {
         when(jwtService.generateToken(any(User.class))).thenReturn("token");
 
         registrationService.register(userRequest);
-
         verify(userService,times(1)).saveUser(any(User.class));
-
         verify(emailSenderService,times(1)).sendEmail(eq(userRequest.getEmail()), anyString());
     }
 
@@ -74,7 +72,6 @@ class RegistrationServiceTest {
         User user = new User(1, "kizaru@mail.ru", "1234", false);
         when(jwtService.generateToken(user)).thenReturn("token");
         String token = jwtService.generateToken(user);
-        when(userRepository.existsById(anyInt())).thenReturn(true);
         when(jwtService.isTokenExpired(anyString())).thenReturn(false);
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         registrationService.confirmToken(token);

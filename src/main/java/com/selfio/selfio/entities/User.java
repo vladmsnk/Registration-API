@@ -1,9 +1,7 @@
 package com.selfio.selfio.entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
-import java.util.Collection;
+import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Entity
@@ -24,7 +22,6 @@ public class User {
 
     @Column(nullable = false)
     private Boolean verified;
-
 
     public User() {
     }
@@ -77,7 +74,7 @@ public class User {
         this.verified = true;
     }
 
-    @Override
+    @Override@Transactional
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

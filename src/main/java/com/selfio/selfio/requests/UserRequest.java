@@ -24,7 +24,6 @@ public class UserRequest {
         return email;
     }
 
-
     public String getPassword() {
         return password;
     }

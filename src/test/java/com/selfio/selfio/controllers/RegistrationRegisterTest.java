@@ -1,28 +1,20 @@
 package com.selfio.selfio.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.selfio.selfio.errors.AlreadyExistsException;
-import com.selfio.selfio.errors.ExpiredTokenException;
-import com.selfio.selfio.errors.UserNotFoundException;
+import com.selfio.selfio.exceptions.AlreadyExistsException;
+import com.selfio.selfio.exceptions.ExpiredTokenException;
+import com.selfio.selfio.exceptions.UserNotFoundException;
 import com.selfio.selfio.requests.UserRequest;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.service.JwtService;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Optional;
 
@@ -57,7 +49,7 @@ class RegistrationRegisterTest {
         this.mockMvc.perform(post("/registration")
                 .content(asJsonString(userRequest)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -114,7 +106,7 @@ class RegistrationRegisterTest {
         given(userRepository.existsByEmail(userRequest.getEmail())).willReturn(true);
         this.mockMvc.perform(post("/registration")
                 .content(asJsonString(userRequest)).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof AlreadyExistsException))
                 .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with " + userRequest.getEmail() + " exists!"));
     }
@@ -131,12 +123,13 @@ class RegistrationRegisterTest {
 
     @Test
     public void shouldNotConfirmAccountWhenUserDoesntExist() throws Exception {
-        User user = new User(1,"moiseenkov-v@mail.ru", "323232", false);
-        String token = jwtService.generateToken(user);
+        User user1 = new User(1,"moiseenkov-v@mail.ru", "323232", false);
+        String token = jwtService.generateToken(user1);
         given(userRepository.existsById(anyInt())).willReturn(false);
         this.mockMvc.perform(get("/confirmation?token=" + token)).andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
-                .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with id = " + user.getId() + " was not found!"));
+                .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with id = " + user1.getId() + " was not found!"));
+
 
     }
     @Test
@@ -148,8 +141,6 @@ class RegistrationRegisterTest {
         this.mockMvc.perform(get("/confirmation?token=" + expiredToken)).andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ExpiredTokenException))
                 .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "Token is expired!"));
-
-
     }
 
 

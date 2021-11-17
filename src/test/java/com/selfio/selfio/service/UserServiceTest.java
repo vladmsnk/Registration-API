@@ -20,10 +20,8 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
-
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     private UserService userService;
 

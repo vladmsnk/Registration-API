@@ -4,6 +4,7 @@ import com.selfio.selfio.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,22 +12,27 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private final String secretKey = "secret";
+
+    @Value("${jwt.key}")
+    private String secretKey;
+
+    @Value("${jwt.timeDiff}")
+    private int timeDiff;
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId().toString());
         return Jwts.builder()
                 .setClaims(claims)
-                .setId(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + timeDiff))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-    public Integer extractId(String token) {
+    public Integer extractUserId(String token) {
         Claims claims = extractAllClaims(token);
-        return Integer.parseInt(claims.getId());
+        return Integer.parseInt(claims.get("userId", String.class));
     }
 
     public Date extractExpirationTime(String token) {

@@ -4,11 +4,9 @@ import com.selfio.selfio.entities.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import static org.assertj.core.api.Assertions.*;
-
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -28,18 +26,16 @@ class UserRepositoryTest {
         User expectedUser = new User(email, "12345", false);
         userRepository.save(expectedUser);
         User givenUser = userRepository.findByEmail(email).get();
-        assertThat(expectedUser).isEqualTo(givenUser);
+        assertEquals(expectedUser, givenUser);
     }
 
     @Test
     void shouldCheckIfExistsByEmail() {
         String email = "andrey@mail.ru";
         User expectedUser = new User(email, "test", true);
-
         userRepository.save(expectedUser);
-
         boolean exists = userRepository.existsByEmail(email);
-        assertThat(exists).isEqualTo(true);
+        assertTrue(exists);
 
     }
 }

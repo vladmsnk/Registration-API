@@ -1,6 +1,5 @@
 package com.selfio.selfio.email;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,20 +9,14 @@ import java.util.Properties;
 
 @Configuration
 public class EmailSenderConfiguration {
-    private final EmailProperties emailProperties;
-
-    @Autowired
-    public EmailSenderConfiguration(EmailProperties emailProperties) {
-        this.emailProperties = emailProperties;
-    }
 
     @Bean
-    public JavaMailSender javaMailSender() {
+    public JavaMailSender javaMailSender(EmailProperties emailProperties) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(this.emailProperties.getHost());
-        mailSender.setPort(this.emailProperties.getPort());
-        mailSender.setUsername(this.emailProperties.getUserName());
-        mailSender.setPassword(this.emailProperties.getPassword());
+        mailSender.setHost(emailProperties.getHost());
+        mailSender.setPort(emailProperties.getPort());
+        mailSender.setUsername(emailProperties.getUserName());
+        mailSender.setPassword(emailProperties.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

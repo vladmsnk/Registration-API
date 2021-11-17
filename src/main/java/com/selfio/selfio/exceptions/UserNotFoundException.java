@@ -1,4 +1,4 @@
-package com.selfio.selfio.errors;
+package com.selfio.selfio.exceptions;
 
 
 import org.springframework.http.HttpStatus;
