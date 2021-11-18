@@ -1,6 +1,5 @@
 package com.selfio.selfio.security.jwt;
 
-import com.selfio.selfio.entities.TempRoles;
 import com.selfio.selfio.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

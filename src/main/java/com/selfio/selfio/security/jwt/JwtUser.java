@@ -1,12 +1,8 @@
 package com.selfio.selfio.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
 
 public class JwtUser implements UserDetails {
 
@@ -57,5 +53,13 @@ public class JwtUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean isVerified() {
+        return this.verified;
+    }
+
+    public Integer getId() {
+        return this.id;
     }
 }
