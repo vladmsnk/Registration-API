@@ -28,7 +28,7 @@ class JwtServiceTest {
         User user = new User(1, "vyumoiseenkov@miem.hse.ru", "12345", false);
 
         ReflectionTestUtils.setField(jwtService, "secretKey", "secret");
-        ReflectionTestUtils.setField(jwtService, "timeDiff", 3600000);
+        ReflectionTestUtils.setField(jwtService, "tokenLifeTime", 3600000);
         String tkn = jwtService.generateToken(user);
 
         Integer extractedId = jwtService.extractUserId(tkn);
@@ -39,7 +39,7 @@ class JwtServiceTest {
     void testExtractExpirationTime() {
         User user = new User(1, "vyumoiseenkov@miem.hse.ru", "12345", false);
         ReflectionTestUtils.setField(jwtService, "secretKey", "secret");
-        ReflectionTestUtils.setField(jwtService, "timeDiff", 3600000);
+        ReflectionTestUtils.setField(jwtService, "tokenLifeTime", 3600000);
         String token = jwtService.generateToken(user);
         assertTrue(jwtService.extractExpirationTime(token).getTime() > new Date().getTime());
     }
@@ -48,7 +48,7 @@ class JwtServiceTest {
     void testIsTokenExpired() {
         User user = new User(1, "vyumoiseenkov@miem.hse.ru", "12345", false);
         ReflectionTestUtils.setField(jwtService, "secretKey", "secret");
-        ReflectionTestUtils.setField(jwtService, "timeDiff", 3600000);
+        ReflectionTestUtils.setField(jwtService, "tokenLifeTime", 3600000);
         String token = jwtService.generateToken(user);
         
         assertFalse(jwtService.isTokenExpired(token));

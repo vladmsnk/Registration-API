@@ -17,15 +17,13 @@ public class JwtService {
     private String secretKey;
 
     @Value("${jwt.timeDiff}")
-    private int timeDiff;
+    private int tokenLifeTime;
 
     public String generateToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId().toString());
         return Jwts.builder()
-                .setClaims(claims)
+                .claim("userId", user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + timeDiff))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenLifeTime))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

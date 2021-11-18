@@ -16,24 +16,24 @@ public class ExceptionHelper {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionHelper.class);
 
     @ExceptionHandler(value = {AlreadyExistsException.class})
-    public ResponseEntity<Object> handleAlreadyExistsException(AlreadyExistsException exception) {
+    public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException exception) {
         logger.error("Already Exists Exception: {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = {UserNotFoundException.class})
-    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException exception) {
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException exception) {
         logger.error("User not found Exception: {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {ExpiredTokenException.class})
-    public ResponseEntity<Object> handleExpiredTokenException(ExpiredTokenException exception) {
+    public ResponseEntity<String> handleExpiredTokenException(ExpiredTokenException exception) {
         logger.error("Expired Token Exception: {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
     }
     @ExceptionHandler(value = {EmailSendingException.class})
-    public  ResponseEntity<Object> handleEmailSendingException(EmailSendingException exception) {
+    public  ResponseEntity<String> handleEmailSendingException(EmailSendingException exception) {
         logger.error("Email Sending Exception: {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

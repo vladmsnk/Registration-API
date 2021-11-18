@@ -14,6 +14,7 @@ public class EmailProperties {
     @Value("${spring.mail.password}")
     private String password;
 
+
     public String getHost() {
         return host;
     }
