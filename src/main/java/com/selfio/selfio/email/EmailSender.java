@@ -15,14 +15,14 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailSenderService {
+public class EmailSender {
 
     private final JavaMailSender javaMailSender;
     private final EmailProperties emailProperties;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public EmailSenderService(JavaMailSender javaMailSender, EmailProperties emailProperties) {
+    public EmailSender(JavaMailSender javaMailSender, EmailProperties emailProperties) {
         this.javaMailSender = javaMailSender;
         this.emailProperties = emailProperties;
     }

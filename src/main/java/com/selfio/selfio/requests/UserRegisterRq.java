@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
-public class UserRequest {
+public class UserRegisterRq {
 
     @Email
     private String email;
@@ -15,7 +15,7 @@ public class UserRequest {
     @Size(min = 6, max = 16, message = "Password must be equal to or greater than 6 characters and less than 16 characters")
     private String password;
 
-    public UserRequest(String email, String password) {
+    public UserRegisterRq(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -41,7 +41,7 @@ public class UserRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserRequest that = (UserRequest) o;
+        UserRegisterRq that = (UserRegisterRq) o;
         return Objects.equals(email, that.email) && Objects.equals(password, that.password);
     }
 

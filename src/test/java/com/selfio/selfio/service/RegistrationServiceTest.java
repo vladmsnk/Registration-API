@@ -1,10 +1,10 @@
 package com.selfio.selfio.service;
 
-import com.selfio.selfio.email.EmailSenderService;
+import com.selfio.selfio.email.EmailSender;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.exceptions.AlreadyExistsException;
 import com.selfio.selfio.repository.UserRepository;
-import com.selfio.selfio.requests.UserRequest;
+import com.selfio.selfio.requests.UserRegisterRq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class RegistrationServiceTest {
     private JwtService jwtService;
 
     @Mock
-    private EmailSenderService emailSenderService;
+    private EmailSender emailSenderService;
 
     @Mock
     private UserService userService;
@@ -44,7 +44,7 @@ class RegistrationServiceTest {
 
     @Test
     void ShouldRegisterUser() {
-        UserRequest userRequest = new UserRequest("vlad@mail.ru", "1324");
+        UserRegisterRq userRequest = new UserRegisterRq("vlad@mail.ru", "1324");
 
 
         doNothing().when(userService).saveUser(any(User.class));
@@ -52,7 +52,6 @@ class RegistrationServiceTest {
         when(userService.createUserByRequest(userRequest)).thenReturn(user);
 
         when(jwtService.generateToken(any(User.class))).thenReturn("token");
-
         registrationService.register(userRequest);
         verify(userService,times(1)).saveUser(any(User.class));
         verify(emailSenderService,times(1)).sendEmail(eq(userRequest.getEmail()), anyString());
@@ -60,7 +59,7 @@ class RegistrationServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTryToRegisterAndUserExists() {
-        UserRequest userRegistrationDto = new UserRequest("vlad@mail.ru", "1324");
+        UserRegisterRq userRegistrationDto = new UserRegisterRq("vlad@mail.ru", "1324");
         Mockito.doReturn(true)
                         .when(userRepository).existsByEmail(userRegistrationDto.getEmail());
         assertThatThrownBy(() -> registrationService.register(userRegistrationDto)).isInstanceOf(AlreadyExistsException.class)

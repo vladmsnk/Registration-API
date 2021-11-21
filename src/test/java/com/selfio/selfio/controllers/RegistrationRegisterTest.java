@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.selfio.selfio.exceptions.AlreadyExistsException;
 import com.selfio.selfio.exceptions.ExpiredTokenException;
 import com.selfio.selfio.exceptions.UserNotFoundException;
-import com.selfio.selfio.requests.UserRequest;
+import com.selfio.selfio.requests.UserRegisterRq;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.service.JwtService;
@@ -42,7 +42,7 @@ class RegistrationRegisterTest {
 
     @Test
     void ShouldSuccessfullyRegister() throws Exception{
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "kamedvedev@miem.hse.ru",
                 "1234567"
         );
@@ -54,7 +54,7 @@ class RegistrationRegisterTest {
 
     @Test
     void badLoginFieldTest() throws Exception {
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "",
                 "vyumoiseenkov@miem.hse.ru"
         );
@@ -65,7 +65,7 @@ class RegistrationRegisterTest {
 
     @Test
     void badEmailFieldTest() throws Exception {
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "vyumoiseenkovmiem.hse.ru",
                 "1234567"
         );
@@ -77,7 +77,7 @@ class RegistrationRegisterTest {
 
     @Test
     void inCorrectPasswordTest() throws Exception {
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "vyumoiseenkovmiem.hse.ru",
                 "1"
         );
@@ -89,7 +89,7 @@ class RegistrationRegisterTest {
 
     @Test
     void shouldNotSendAnEmailWhenUserDtoIsCorrectButEmailDoesNotExists() throws Exception {
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "vlad@test.ru",
                 "123455324");
         this.mockMvc.perform(post("/registration").content(asJsonString(userRequest)))
@@ -99,7 +99,7 @@ class RegistrationRegisterTest {
 
     @Test
     public void shouldNotRegisterWhenUserAlreadyExists() throws Exception {
-        UserRequest userRequest = new UserRequest(
+        UserRegisterRq userRequest = new UserRegisterRq(
                 "vyumoiseenkov@miem.hse.ru",
                 "1234567"
         );

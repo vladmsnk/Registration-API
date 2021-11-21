@@ -3,7 +3,6 @@ package com.selfio.selfio.service;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 
-import com.selfio.selfio.requests.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

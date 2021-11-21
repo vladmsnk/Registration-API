@@ -1,6 +1,6 @@
 package com.selfio.selfio.service;
 
-import com.selfio.selfio.requests.UserRequest;
+import com.selfio.selfio.requests.UserRegisterRq;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User createUserByRequest(UserRequest userRequest) {
+    public User createUserByRequest(UserRegisterRq userRequest) {
         return new User(userRequest.getEmail(), userRequest.getPassword(), false);
     }
 

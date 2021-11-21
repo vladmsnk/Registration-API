@@ -4,8 +4,8 @@ import com.selfio.selfio.entities.UserInfo;
 import com.selfio.selfio.exceptions.AlreadyExistsException;
 import com.selfio.selfio.exceptions.ExpiredTokenException;
 import com.selfio.selfio.exceptions.UserNotFoundException;
-import com.selfio.selfio.requests.UserRequest;
-import com.selfio.selfio.email.EmailSenderService;
+import com.selfio.selfio.requests.UserRegisterRq;
+import com.selfio.selfio.email.EmailSender;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import org.slf4j.Logger;
@@ -20,20 +20,18 @@ import java.util.Optional;
 @Service
 public class RegistrationService {
 
-    @Value("${server.host}")
-    private String host;
+    @Value("${confirmationLink}")
+    private String confirmationLink;
 
-    @Value("${server.port}")
-    private String port;
 
     private final UserService userService;
     private final UserRepository userRepository;
-    private final EmailSenderService emailSenderService;
+    private final EmailSender emailSenderService;
     private final JwtService jwtService;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public RegistrationService(UserService userService, UserRepository userRepository, EmailSenderService emailSenderService, JwtService jwtService) {
+    public RegistrationService(UserService userService, UserRepository userRepository, EmailSender emailSenderService, JwtService jwtService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.emailSenderService = emailSenderService;
@@ -41,14 +39,14 @@ public class RegistrationService {
     }
 
     @Transactional
-    public UserInfo register(UserRequest userRequest) {
+    public UserInfo register(UserRegisterRq userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new AlreadyExistsException("User with " + userRequest.getEmail() + " exists!");
         }
         User user = userService.createUserByRequest(userRequest);
         userService.saveUser(user);
         String token = jwtService.generateToken(user);
-        emailSenderService.sendEmail(userRequest.getEmail(), createConfirmationLink(token));
+        emailSenderService.sendEmail(userRequest.getEmail(), String.format(confirmationLink, token));
         return new UserInfo(
                 user.getEmail(),
                 user.getVerified()
@@ -69,10 +67,6 @@ public class RegistrationService {
         userRepository.save(user);
 
         return new UserInfo(user.getEmail(), user.getVerified());
-    }
-
-    private String createConfirmationLink(String token) {
-        return "<h1> <a href='http://" + host + ":" +  port + "/confirmation?token=" + token  + "'> Confirm Account</a> </h1>";
     }
 }
 

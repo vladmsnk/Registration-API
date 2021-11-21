@@ -1,8 +1,7 @@
 package com.selfio.selfio.controllers;
 
 import com.selfio.selfio.entities.UserInfo;
-import com.selfio.selfio.requests.UserRequest;
-import com.selfio.selfio.entities.User;
+import com.selfio.selfio.requests.UserRegisterRq;
 import com.selfio.selfio.service.RegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class RegistrationController {
     }
 
     @PostMapping(path = "/registration")
-    public ResponseEntity<UserInfo> register(@Valid @RequestBody UserRequest userRequest){
+    public ResponseEntity<UserInfo> register(@Valid @RequestBody UserRegisterRq userRequest){
         UserInfo registered =  registrationService.register(userRequest);
         LOGGER.debug("Registering user account with information: {}", userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(registered);
