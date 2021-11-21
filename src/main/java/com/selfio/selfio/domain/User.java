@@ -1,6 +1,7 @@
 package com.selfio.selfio.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(
@@ -89,4 +90,28 @@ public class User {
     public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(verified, user.verified);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, verified);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", verified=" + verified +
+                '}';
+    }
+
 }
