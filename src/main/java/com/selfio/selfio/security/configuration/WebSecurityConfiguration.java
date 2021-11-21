@@ -21,7 +21,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/confirmation")
                 .permitAll()
-                .antMatchers("/", "/resources/**").permitAll()
                 .anyRequest()
                 .permitAll();
     }
