@@ -1,9 +1,11 @@
 package com.selfio.selfio.controllers;
 
 import com.selfio.selfio.dto.AuthenticationDto;
+import com.selfio.selfio.entities.AuthenticatedUserInfo;
 import com.selfio.selfio.entities.TempRoles;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.security.jwt.JwtTokenProvider;
+import com.selfio.selfio.services.AuthService;
 import com.selfio.selfio.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,27 +33,8 @@ public class AuthenticationController {
         this.userService = userService;
     }
     @PostMapping("login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody AuthenticationDto request){
-        try {
-            String email = request.getEmail();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
-            User user = userService.findByEmail(email);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found");
-            }
-            String token = jwtTokenProvider.createToken(user.getId(), email, TempRoles.getRoles());
-            Map<String, String> response = new HashMap<>();
-            response.put("email", email);
-            response.put("token", token);
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid email or password");
-        }
-    }
-
-    @GetMapping("info")
-    public String getInfoController() {
-        return "all info";
+    public ResponseEntity<AuthenticatedUserInfo> login(@RequestBody AuthenticationDto request){
+        return ResponseEntity.ok((new AuthService(authenticationManager, jwtTokenProvider, userService).authenticateUser(request)));
     }
 
 }
