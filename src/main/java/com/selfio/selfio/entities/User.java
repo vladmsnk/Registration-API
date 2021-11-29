@@ -1,14 +1,15 @@
 package com.selfio.selfio.entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
-import java.util.Collection;
+import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "email"),
+        })
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,11 +32,11 @@ public class User implements UserDetails {
         this.verified = verified;
     }
 
-    public User(Integer id, String email, String password) {
+    public User(Integer id, String email, String password, Boolean verified) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.verified = false;
+        this.verified = verified;
     }
 
     public Integer getId() {
@@ -54,39 +55,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
 
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -96,11 +69,12 @@ public class User implements UserDetails {
         return verified;
     }
 
-    public void setVerified(Boolean verified)  {
-        this.verified = verified;
+    public void verify()  {
+        this.verified = true;
     }
 
     @Override
+    @Transactional
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
