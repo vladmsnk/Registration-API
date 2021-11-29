@@ -1,4 +1,4 @@
-package com.selfio.selfio.services;
+package com.selfio.selfio.service;
 
 import com.selfio.selfio.dto.AuthenticationDto;
 import com.selfio.selfio.entities.AuthenticatedUserInfo;
@@ -6,16 +6,12 @@ import com.selfio.selfio.entities.TempRoles;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthService {

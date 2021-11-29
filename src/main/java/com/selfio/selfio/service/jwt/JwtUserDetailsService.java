@@ -1,8 +1,8 @@
-package com.selfio.selfio.services.jwt;
+package com.selfio.selfio.service.jwt;
 
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.security.jwt.JwtUserFactory;
-import com.selfio.selfio.services.UserService;
+import com.selfio.selfio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

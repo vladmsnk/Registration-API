@@ -1,4 +1,4 @@
-package com.selfio.selfio.repositories;
+package com.selfio.selfio.repository;
 
 import com.selfio.selfio.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
-package com.selfio.selfio.services;
+package com.selfio.selfio.service;
 
 import com.selfio.selfio.entities.User;
-import com.selfio.selfio.repositories.UserRepository;
+import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.security.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

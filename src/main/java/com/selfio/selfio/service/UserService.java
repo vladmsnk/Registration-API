@@ -1,4 +1,4 @@
-package com.selfio.selfio.services;
+package com.selfio.selfio.service;
 
 import com.selfio.selfio.entities.User;
 

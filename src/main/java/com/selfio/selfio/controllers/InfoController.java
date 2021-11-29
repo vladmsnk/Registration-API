@@ -1,7 +1,7 @@
 package com.selfio.selfio.controllers;
 
 import com.selfio.selfio.security.jwt.JwtTokenProvider;
-import com.selfio.selfio.services.UserService;
+import com.selfio.selfio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.GetMapping;
