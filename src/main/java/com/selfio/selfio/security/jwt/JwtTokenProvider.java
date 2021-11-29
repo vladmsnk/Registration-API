@@ -33,11 +33,6 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     private Key getSecretKey() {
         return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
