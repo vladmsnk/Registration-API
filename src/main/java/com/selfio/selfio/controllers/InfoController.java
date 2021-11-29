@@ -24,7 +24,6 @@ public class InfoController {
     }
     @GetMapping("information")
     public String getInfoController() {
-        System.out.println(1);
         return "all info";
     }
 }

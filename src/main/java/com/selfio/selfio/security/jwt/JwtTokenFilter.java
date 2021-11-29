@@ -30,6 +30,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 }
             }
         } catch (JwtAuthenticationException e) {
+            System.out.println(e.getClass());
             SecurityContextHolder.clearContext();
             ((HttpServletResponse) servletResponse).sendError(e.getHttpStatus().value());
         }
