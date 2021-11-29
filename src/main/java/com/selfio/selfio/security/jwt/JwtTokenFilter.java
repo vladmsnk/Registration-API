@@ -1,7 +1,11 @@
 package com.selfio.selfio.security.jwt;
 
+import com.selfio.selfio.service.JwtService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -13,18 +17,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtTokenFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
+        String token = jwtService.resolveToken((HttpServletRequest) servletRequest);
         try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            if (token != null && jwtService.validateToken(token)) {
+                Authentication authentication = getAuthentication(jwtService.extractUserEmail(token));
                 if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
@@ -35,5 +41,10 @@ public class JwtTokenFilter extends GenericFilterBean {
             ((HttpServletResponse) servletResponse).sendError(e.getHttpStatus().value());
         }
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public Authentication getAuthentication(String email) {
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

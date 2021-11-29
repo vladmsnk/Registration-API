@@ -2,10 +2,8 @@ package com.selfio.selfio.service;
 
 import com.selfio.selfio.dto.AuthenticationDto;
 import com.selfio.selfio.entities.AuthenticatedUserInfo;
-import com.selfio.selfio.entities.TempRoles;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
-import com.selfio.selfio.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,13 +18,13 @@ import java.util.Optional;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+    public AuthService(AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
 
@@ -38,7 +36,7 @@ public class AuthService {
             if (user.isEmpty()) {
                 throw new UsernameNotFoundException("User not found");
             }
-            String token = jwtTokenProvider.createToken(user.get().getId(), email, TempRoles.getRoles());
+            String token = jwtService.createToken(user.get());
             return new AuthenticatedUserInfo(email, token);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email or password");
