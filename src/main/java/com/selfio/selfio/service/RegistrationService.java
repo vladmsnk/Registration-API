@@ -23,6 +23,9 @@ public class RegistrationService {
     @Value("${confirmationLink}")
     private String confirmationLink;
 
+    protected void setConfirmationLink(String confirmationLink) {
+        this.confirmationLink = confirmationLink;
+    }
 
     private final UserService userService;
     private final UserRepository userRepository;
@@ -45,7 +48,7 @@ public class RegistrationService {
         }
         User user = userService.createUserByRequest(userRequest);
         userService.saveUser(user);
-        String token = jwtService.generateToken(user);
+        String token = jwtService.createToken(user);
         emailSenderService.sendEmail(userRequest.getEmail(), String.format(confirmationLink, token));
         return new UserInfo(
                 user.getEmail(),

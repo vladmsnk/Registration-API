@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping(value = "/api/v1/register/")
 public class RegistrationController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
@@ -23,14 +24,14 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @GetMapping(path = "/confirmation")
+    @GetMapping(path = "confirmation")
     public ResponseEntity<UserInfo> confirm(@RequestParam("token")  String token) {
         UserInfo confirmed = registrationService.confirmToken(token);
         LOGGER.debug("Confirmation of the token: {}", token);
         return ResponseEntity.status(HttpStatus.OK).body(confirmed);
     }
 
-    @PostMapping(path = "/registration")
+    @PostMapping(path = "registration")
     public ResponseEntity<UserInfo> register(@Valid @RequestBody UserRegisterRq userRequest){
         UserInfo registered =  registrationService.register(userRequest);
         LOGGER.debug("Registering user account with information: {}", userRequest);
