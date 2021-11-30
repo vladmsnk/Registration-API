@@ -37,7 +37,7 @@ public class AuthService {
                 throw new UsernameNotFoundException("User not found");
             }
             String token = jwtService.createToken(user.get());
-            return new AuthenticatedUserInfo(email, token);
+            return new AuthenticatedUserInfo(email, user.get().getVerified(), token);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email or password");
         }
