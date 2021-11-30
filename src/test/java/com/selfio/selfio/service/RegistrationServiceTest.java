@@ -39,6 +39,7 @@ class RegistrationServiceTest {
     @BeforeEach
     void setRegistrationService() {
         registrationService = new RegistrationService(userService, userRepository, emailSenderService, jwtService);
+        registrationService.setConfirmationLink("<h1> <a href='http://${server.host}:${server.port}/confirmation?token=%s'> Confirm Account</a> </h1>");
     }
 
 
@@ -51,7 +52,7 @@ class RegistrationServiceTest {
         User user = new User(1, userRequest.getEmail(), userRequest.getPassword(), false);
         when(userService.createUserByRequest(userRequest)).thenReturn(user);
 
-        when(jwtService.generateToken(any(User.class))).thenReturn("token");
+        when(jwtService.createToken(any(User.class))).thenReturn("token");
         registrationService.register(userRequest);
         verify(userService,times(1)).saveUser(any(User.class));
         verify(emailSenderService,times(1)).sendEmail(eq(userRequest.getEmail()), anyString());
@@ -69,8 +70,8 @@ class RegistrationServiceTest {
     @Test
     void shouldConfirmToken() {
         User user = new User(1, "kizaru@mail.ru", "1234", false);
-        when(jwtService.generateToken(user)).thenReturn("token");
-        String token = jwtService.generateToken(user);
+        when(jwtService.createToken(user)).thenReturn("token");
+        String token = jwtService.createToken(user);
         when(jwtService.isTokenExpired(anyString())).thenReturn(false);
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         registrationService.confirmToken(token);

@@ -1,51 +1,79 @@
 package com.selfio.selfio.service;
 
 import com.selfio.selfio.entities.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.selfio.selfio.security.jwt.JwtAuthenticationException;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class JwtService {
 
-    @Value("${jwt.key}")
-    private String secretKey;
+    @Value("${jwt.token.secret}")
+    private String secret;
+    @Value("${jwt.token.expired}")
+    private long expiry;
 
-    @Value("${jwt.timeDiff}")
-    private int tokenLifeTime;
+    private Key getSecretKey() {
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
+    }
 
-    public String generateToken(User user) {
+    public String createToken(User user) {
+        Claims claims = Jwts.claims();
+        claims.put("email", user.getEmail());
+        claims.put("userId", user.getId().toString());
+        Date now = new Date(System.currentTimeMillis());
+        Date expiration = new Date(System.currentTimeMillis() + expiry);
         return Jwts.builder()
-                .claim("userId", user.getId().toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenLifeTime))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+
+    public String extractUserEmail(String token){
+        return this.extractAllClaims(token).get("email").toString();
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        } else return null;
+    }
+
+    public boolean validateToken(String token){
+        try {
+            return !this.isTokenExpired(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtAuthenticationException("token is expired or invalid");
+        }
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSecretKey()).build()
+                .parseClaimsJws(token).getBody();
+    }
+
+    public Date extractExpiry(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.getExpiration();
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractExpiry(token).before(new Date());
     }
 
     public Integer extractUserId(String token) {
         Claims claims = extractAllClaims(token);
         return Integer.parseInt(claims.get("userId", String.class));
-    }
-
-    public Date extractExpirationTime(String token) {
-        Claims claims = extractAllClaims(token);
-        return claims.getExpiration();
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public boolean isTokenExpired(String token) {
-        return extractExpirationTime(token).before(new Date());
     }
 }

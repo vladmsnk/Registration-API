@@ -14,19 +14,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "verified", nullable = false)
     private Boolean verified;
 
     public User() {
     }
 
-    public  User(String email, String password, Boolean verified) {
+    public User(String email, String password, Boolean verified) {
         this.email = email;
         this.password = password;
         this.verified = verified;
@@ -46,7 +46,6 @@ public class User {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getEmail() {
         return email;
@@ -74,7 +73,8 @@ public class User {
         this.verified = true;
     }
 
-    @Override@Transactional
+    @Override
+    @Transactional
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -84,7 +84,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id , email, password, verified);
+        return Objects.hash(id, email, password, verified);
     }
 
     @Override
@@ -97,5 +97,4 @@ public class User {
                 '}';
     }
 }
-
 
