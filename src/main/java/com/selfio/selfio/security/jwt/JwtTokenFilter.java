@@ -1,6 +1,9 @@
 package com.selfio.selfio.security.jwt;
 
+import com.selfio.selfio.exceptions.ExpiredTokenException;
 import com.selfio.selfio.service.JwtService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,9 +39,8 @@ public class JwtTokenFilter extends GenericFilterBean {
                 }
             }
         } catch (JwtAuthenticationException e) {
-            System.out.println(e.getClass());
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse) servletResponse).sendError(e.getHttpStatus().value());
+            ((HttpServletResponse) servletResponse).sendError(HttpStatus.UNAUTHORIZED.value());
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

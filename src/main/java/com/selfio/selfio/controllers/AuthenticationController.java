@@ -4,6 +4,7 @@ import com.selfio.selfio.dto.AuthenticationDto;
 import com.selfio.selfio.entities.AuthenticatedUserInfo;
 import com.selfio.selfio.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("login")
     public ResponseEntity<AuthenticatedUserInfo> login(@RequestBody AuthenticationDto request) {
-        return ResponseEntity.ok(authService.authenticateUser(request));
+        return ResponseEntity.status(HttpStatus.OK).body(authService.authenticateUser(request));
     }
 
 }

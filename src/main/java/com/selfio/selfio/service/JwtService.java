@@ -1,9 +1,11 @@
 package com.selfio.selfio.service;
 
+import com.google.gson.JsonSyntaxException;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.security.jwt.JwtAuthenticationException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +55,8 @@ public class JwtService {
     public boolean validateToken(String token){
         try {
             return !this.isTokenExpired(token);
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException | JsonSyntaxException e) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new JwtAuthenticationException("token is expired or invalid");
         }
     }
