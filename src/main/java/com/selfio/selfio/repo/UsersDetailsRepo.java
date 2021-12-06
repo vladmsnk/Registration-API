@@ -1,6 +1,6 @@
 package com.selfio.selfio.repo;
 
-import com.selfio.selfio.domain.User;
+import com.selfio.selfio.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

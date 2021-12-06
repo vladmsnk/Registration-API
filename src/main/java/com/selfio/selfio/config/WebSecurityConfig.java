@@ -1,6 +1,6 @@
 package com.selfio.selfio.config;
 
-import com.selfio.selfio.domain.User;
+import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repo.UsersDetailsRepo;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;

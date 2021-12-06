@@ -1,4 +1,4 @@
-package com.selfio.selfio.domain;
+package com.selfio.selfio.entities;
 
 import javax.persistence.*;
 import java.util.Objects;

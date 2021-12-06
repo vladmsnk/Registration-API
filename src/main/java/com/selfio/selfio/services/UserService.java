@@ -1,6 +1,6 @@
 package com.selfio.selfio.services;
 
-import com.selfio.selfio.domain.User;
+import com.selfio.selfio.entities.User;
 
 public interface UserService {
     User findByEmail(String email);

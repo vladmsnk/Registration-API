@@ -3,7 +3,7 @@ package com.selfio.selfio.services;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.selfio.selfio.domain.User;
+import com.selfio.selfio.entities.User;
 import com.selfio.selfio.dto.UserAuth;
 import com.selfio.selfio.repo.UsersDetailsRepo;
 import com.selfio.selfio.security.jwt.JwtTokenProvider;
