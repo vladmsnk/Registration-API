@@ -7,6 +7,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,6 @@ public class JwtService {
         try {
             return !this.isTokenExpired(token);
         } catch (JwtException | IllegalArgumentException | JsonSyntaxException e) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             throw new JwtAuthenticationException("token is expired or invalid");
         }
     }

@@ -4,6 +4,7 @@ import com.selfio.selfio.requests.UserRegisterRq;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

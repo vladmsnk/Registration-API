@@ -51,7 +51,7 @@ class RegistrationRegisterTest {
                 "kamedvedev@miem.hse.ru",
                 "1234567"
         );
-        this.mockMvc.perform(post("/registration")
+        this.mockMvc.perform(post("/api/v1/register/registration")
                         .content(asJsonString(userRequest)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
@@ -64,7 +64,7 @@ class RegistrationRegisterTest {
                 "",
                 "vyumoiseenkov@miem.hse.ru"
         );
-        this.mockMvc.perform(post("/registration").content(asJsonString(userRequest)))
+        this.mockMvc.perform(post("/api/v1/register/registration").content(asJsonString(userRequest)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -77,7 +77,7 @@ class RegistrationRegisterTest {
                 "1234567"
         );
 
-        this.mockMvc.perform(post("/registration").content(asJsonString(userRequest)))
+        this.mockMvc.perform(post("/api/v1/register/registration").content(asJsonString(userRequest)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -89,7 +89,7 @@ class RegistrationRegisterTest {
                 "vyumoiseenkovmiem.hse.ru",
                 "1"
         );
-        this.mockMvc.perform(post("/registration").content(asJsonString(userRequest)))
+        this.mockMvc.perform(post("/api/v1/register/registration").content(asJsonString(userRequest)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -101,7 +101,7 @@ class RegistrationRegisterTest {
         UserRegisterRq userRequest = new UserRegisterRq(
                 "vlad@test.ru",
                 "123455324");
-        this.mockMvc.perform(post("/registration").content(asJsonString(userRequest)))
+        this.mockMvc.perform(post("/api/v1/register/registration").content(asJsonString(userRequest)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -114,7 +114,7 @@ class RegistrationRegisterTest {
                 "1234567"
         );
         given(userRepository.existsByEmail(userRequest.getEmail())).willReturn(true);
-        this.mockMvc.perform(post("/registration")
+        this.mockMvc.perform(post("/api/v1/register/registration")
                         .content(asJsonString(userRequest)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof AlreadyExistsException))
@@ -128,7 +128,7 @@ class RegistrationRegisterTest {
         String token = jwtService.createToken(user);
         given(userRepository.existsById(anyInt())).willReturn(true);
         given(userRepository.findById(anyInt())).willReturn(Optional.of(user));
-        this.mockMvc.perform(get("/confirmation?token=" + token)).andDo(print())
+        this.mockMvc.perform(get("/api/v1/register/confirmation?token=" + token)).andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -138,7 +138,7 @@ class RegistrationRegisterTest {
         User user1 = new User(1, "moiseenkov-v@mail.ru", "323232", false);
         String token = jwtService.createToken(user1);
         given(userRepository.existsById(anyInt())).willReturn(false);
-        this.mockMvc.perform(get("/confirmation?token=" + token)).andDo(print())
+        this.mockMvc.perform(get("/api/v1/register/confirmation?token=" + token)).andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
                 .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "User with id = " + user1.getId() + " was not found!"));
 
@@ -152,7 +152,7 @@ class RegistrationRegisterTest {
         String expiredToken = jwtService.createToken(user);
         given(userRepository.existsById(anyInt())).willReturn(true);
         given(jwtService.isTokenExpired(expiredToken)).willReturn(true);
-        this.mockMvc.perform(get("/confirmation?token=" + expiredToken)).andDo(print())
+        this.mockMvc.perform(get("/api/v1/register/confirmation?token=" + expiredToken)).andDo(print())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ExpiredTokenException))
                 .andExpect(result -> assertEquals(result.getResolvedException().getMessage(), "Token is expired!"));
     }

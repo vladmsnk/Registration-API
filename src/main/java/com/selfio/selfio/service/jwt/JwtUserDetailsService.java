@@ -4,6 +4,7 @@ import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.UserRepository;
 import com.selfio.selfio.security.jwt.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
