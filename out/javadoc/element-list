@@ -1,0 +1,13 @@
+com.selfio.selfio
+com.selfio.selfio.configs
+com.selfio.selfio.controllers
+com.selfio.selfio.dto
+com.selfio.selfio.email
+com.selfio.selfio.entities
+com.selfio.selfio.exceptions
+com.selfio.selfio.repository
+com.selfio.selfio.requests
+com.selfio.selfio.security.configuration
+com.selfio.selfio.security.jwt
+com.selfio.selfio.service
+com.selfio.selfio.service.jwt
