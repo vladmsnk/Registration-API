@@ -4,7 +4,10 @@ import com.selfio.selfio.entities.MessageType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * The interface is a Spring Repository for relation 'messagetype'.
+ */
 @Repository
 public interface MessageTypeRepository extends JpaRepository<MessageType, Integer> {
-    public MessageType findByMessageType(String messageType);
+    MessageType findByMessageType(String messageType);
 }

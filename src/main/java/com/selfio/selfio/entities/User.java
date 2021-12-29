@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Objects;
 
+/**
+ * The class describes the objects from 'users' entity.
+ */
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
@@ -11,7 +14,7 @@ import java.util.Objects;
         })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "email", nullable = false)

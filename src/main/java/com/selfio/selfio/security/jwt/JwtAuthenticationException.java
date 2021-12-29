@@ -4,6 +4,10 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 
+/**
+ * Custom authentication Exception class for JWT token.
+ * @see com.selfio.selfio.service.JwtService
+ */
 @Getter
 public class JwtAuthenticationException extends AuthenticationException {
     private HttpStatus httpStatus;

@@ -18,12 +18,19 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * User registration service
+ */
 @Service
 public class RegistrationService {
 
     @Value("${confirmationLink}")
     private String confirmationLink;
 
+    /**
+     * Allows to set confirmation link.
+     * @param confirmationLink is a custom confirmation link.
+     */
     protected void setConfirmationLink(String confirmationLink) {
         this.confirmationLink = confirmationLink;
     }
@@ -34,6 +41,13 @@ public class RegistrationService {
     private final JwtService jwtService;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Autowired constructor of the Service.
+     * @param userService  is the custom Service for user entity based on Spring Boot.
+     * @param userRepository is the Spring Repository of relation 'users'.
+     * @param emailSenderService is the custom Service for email sending based on Spring Boot.
+     * @param jwtService is the custom Spring Service for tokens.
+     */
     @Autowired
     public RegistrationService(UserService userService, UserRepository userRepository, EmailSender emailSenderService, JwtService jwtService) {
         this.userService = userService;
@@ -42,6 +56,12 @@ public class RegistrationService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Method for registering new user.
+     * @param userRequest object with user credentials.
+     * @return new object of {@link UserInfo}
+     * @throws AlreadyExistsException - custom exception when user already registered.
+     */
     @Transactional
     public UserInfo register(UserRegisterRq userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
@@ -57,6 +77,12 @@ public class RegistrationService {
         );
     }
 
+    /**
+     * Method for JWT token confirmation.
+     * @param token - recieved JWT token.
+     * @return new object of {@link UserInfo}
+     * @throws UserNotFoundException - custom exception when user not found in database.
+     */
     public UserInfo confirmToken(String token) {
         if (jwtService.isTokenExpired(token)) {
             throw new ExpiredTokenException("Token is expired!");

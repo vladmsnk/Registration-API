@@ -1,5 +1,8 @@
 package com.selfio.selfio.entities;
 
+/**
+ * The class describes the content of the user's information response.
+ */
 public class UserInfo {
 
     private String email;

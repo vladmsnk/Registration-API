@@ -3,6 +3,9 @@ package com.selfio.selfio.email;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Objects of the class contains properties for email sending.
+ */
 @Component
 public class EmailProperties {
     @Value("${spring.mail.host}")

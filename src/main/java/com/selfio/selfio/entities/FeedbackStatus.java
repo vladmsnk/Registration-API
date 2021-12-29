@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The class describes the objects from 'feedback_status' entity.
+ */
 @Entity
 @Table(name = "feedback_status",
         uniqueConstraints = {

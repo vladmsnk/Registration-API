@@ -2,6 +2,9 @@ package com.selfio.selfio.entities;
 
 import lombok.Getter;
 
+/**
+ * The class describes the content of the authentication response.
+ */
 @Getter
 public class AuthenticatedUserInfo {
 

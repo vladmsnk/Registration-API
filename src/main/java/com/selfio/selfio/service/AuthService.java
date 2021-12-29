@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * User authentication service
+ */
 @Service
 public class AuthService {
 
@@ -21,13 +24,27 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
+    /**
+     * Autowired constructor
+     * @param authenticationManager is the default Spring bean for authentication.
+     * @param jwtService is the custom Spring Service for tokens.
+     * @param userRepository is the Spring Repository of relation 'users'.
+     */
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository) {
+    public AuthService(AuthenticationManager authenticationManager,
+                       JwtService jwtService, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
 
+    /**
+     * The method authenticates user by credentials.
+     * @param requestInfo object of class {@link AuthenticationDto}
+     * @return {@link AuthenticatedUserInfo}
+     * @throws UsernameNotFoundException is the Spring Boot default exception
+     * @throws BadCredentialsException is the Spring Boot default exception
+     */
     public AuthenticatedUserInfo authenticateUser(AuthenticationDto requestInfo) throws UsernameNotFoundException, BadCredentialsException {
         try {
             String email = requestInfo.getEmail();

@@ -5,7 +5,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
-
+/**
+ * Objects of this class contains user's credentials, received from client.
+ */
 public class UserRegisterRq {
 
     @Email

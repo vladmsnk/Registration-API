@@ -7,11 +7,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class provides creation objects of {@link JwtUser} from user's info.
+ */
 public final class JwtUserFactory {
 
     public JwtUserFactory() {
     }
 
+    /**
+     * The method provides
+     * @param user is the object of entity 'users'.
+     * @return New object with {@link org.springframework.security.core.userdetails.UserDetails} properties.
+     */
     public static JwtUser create(User user) {
         return new JwtUser(user.getId(), user.getEmail(), user.getPassword(), user.getVerified(), mapToGrantedAuthorities());
     }

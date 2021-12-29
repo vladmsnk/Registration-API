@@ -7,9 +7,17 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * The class provides applying email sending properties.
+ */
 @Configuration
 public class EmailSenderConfiguration {
 
+    /**
+     * Spring Bean with mail confirmation sending properties.
+     * @param emailProperties - object with default email sending properties.
+     * @return {@link JavaMailSender}
+     */
     @Bean
     public JavaMailSender javaMailSender(EmailProperties emailProperties) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

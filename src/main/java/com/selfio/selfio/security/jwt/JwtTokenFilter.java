@@ -18,15 +18,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The class filtering all received requests by checking token in a header.
+ */
 public class JwtTokenFilter extends GenericFilterBean {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * All parameter constructor.
+     * @param jwtService is the custom Service for JWT tokens.
+     * @param userDetailsService is a default Spring bean.
+     */
     public JwtTokenFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * The method provides filtering requests outside a controller.
+     * @param servletRequest is a received request.
+     * @param servletResponse is a response for client.
+     * @param filterChain is the object for filtering request.
+     * @throws IOException if the response cannot be sent.
+     * @throws ServletException if filter cannot resolve request.
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String token = jwtService.resolveToken((HttpServletRequest) servletRequest);
