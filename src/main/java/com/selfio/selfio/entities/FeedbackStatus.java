@@ -17,8 +17,9 @@ import javax.persistence.*;
 @Setter
 public class FeedbackStatus {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "statusname")
-    private Integer statusName;
+    private String statusName;
 }

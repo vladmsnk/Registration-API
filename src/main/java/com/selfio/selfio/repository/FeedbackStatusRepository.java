@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FeedbackStatusRepository extends JpaRepository<FeedbackStatus, Integer> {
+    FeedbackStatus findByStatusName(String statusName);
 }

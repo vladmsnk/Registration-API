@@ -1,12 +1,15 @@
 package com.selfio.selfio.service;
 
+import com.selfio.selfio.dto.FeedbackDto;
 import com.selfio.selfio.entities.Feedback;
 import com.selfio.selfio.entities.FeedbackStatus;
 import com.selfio.selfio.entities.MessageType;
 import com.selfio.selfio.entities.User;
 import com.selfio.selfio.repository.FeedbackRepository;
+import com.selfio.selfio.repository.FeedbackStatusRepository;
 import com.selfio.selfio.repository.MessageTypeRepository;
 import com.selfio.selfio.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,28 +20,41 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final UserRepository userRepository;
     private final MessageTypeRepository messageTypeRepository;
+    private final FeedbackStatusRepository feedbackStatusRepository;
 
+    @Autowired
     public FeedbackService(FeedbackRepository feedbackRepository,
                            UserRepository userRepository,
-                           MessageTypeRepository messageTypeRepository) {
+                           MessageTypeRepository messageTypeRepository,
+                           FeedbackStatusRepository feedbackStatusRepository) {
         this.feedbackRepository = feedbackRepository;
         this.userRepository = userRepository;
         this.messageTypeRepository = messageTypeRepository;
+        this.feedbackStatusRepository = feedbackStatusRepository;
     }
 
-    public void saveFeedback(String messageType, String text, String email)
+    public void saveFeedback(FeedbackDto feedbackDto)
             throws IllegalArgumentException{
-        User user = this.findUser(email);
+        User user = this.findUser(feedbackDto.getEmail());
         if (user == null) {
             throw new IllegalArgumentException();
         }
         Feedback feedback = new Feedback();
-        feedback.setEmail(email);
+        feedback.setEmail(feedbackDto.getEmail());
         feedback.setUserId(user.getId());
-        feedback.setMessageType(messageTypeRepository.findByMessageType(messageType).getId());
-        feedback.setText(text);
-        feedback.setStatusCode(1);
+        feedback.setMessageType(messageTypeRepository.findByMessageType(feedbackDto.getMessageType()).getId());
+        if (feedback.getMessageType() == null) {
+            throw new IllegalArgumentException();
+        }
+        feedback.setText(feedbackDto.getFeedbackText());
+        feedback.setStatusCode(feedbackStatusRepository.findByStatusName("In processing").getId());
         feedbackRepository.save(feedback);
+    }
+
+    public void saveFeedbackStatus(String newFeedbackStatus) {
+        FeedbackStatus feedbackStatus = new FeedbackStatus();
+        feedbackStatus.setStatusName(newFeedbackStatus);
+        feedbackStatusRepository.save(feedbackStatus);
     }
 
     private User findUser(String email) {

@@ -17,6 +17,7 @@ import javax.persistence.*;
 @Setter
 public class MessageType {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "messagetype")

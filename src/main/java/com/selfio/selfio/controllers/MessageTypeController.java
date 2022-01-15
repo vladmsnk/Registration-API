@@ -1,5 +1,6 @@
 package com.selfio.selfio.controllers;
 
+import com.selfio.selfio.dto.MessageTypeAddedDto;
 import com.selfio.selfio.entities.MessageType;
 import com.selfio.selfio.repository.MessageTypeRepository;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class MessageTypeController {
     }
 
     @PutMapping(value = "add")
-    public ResponseEntity<String> addMessagetype (@RequestParam("messagetype") String newType) {
+    public ResponseEntity<String> addMessagetype (@RequestBody MessageTypeAddedDto newTypeDto) {
         MessageType messageType = new MessageType();
-        messageType.setMessageType(newType);
+        messageType.setMessageType(newTypeDto.getMessagetype());
         messageTypeRepository.save(messageType);
         return ResponseEntity.ok("added");
     }
